@@ -6,6 +6,7 @@ const querystring = require("querystring");
 
 const MONGO_URL = process.env.MONGOLAB_URI ||
                  `mongodb://${process.env.IP || "localhost"}:27017/image-search`;
+
 const SERVICE_REQUEST_BASE_OPTIONS = Object.freeze({
   hostname: "api.datamarket.azure.com",
   path: "/Bing/Search/v1/Image?$format=json&",
@@ -119,6 +120,8 @@ mongo.connect(MONGO_URL).then(db => {
     });
   }
   
+  // Create/ensure index for latest results
+  return searches.createIndex({ when: -1 });
   
 }).catch(handleError);
 
